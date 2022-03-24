@@ -11,6 +11,6 @@ export class DiscountService {
   constructor() { }
 
   getAllDiscount(): Observable<DiscountModel[]> {
-    return of({...discounts});
+    return of([...discounts]);
   }
 }
