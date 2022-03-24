@@ -17,8 +17,10 @@
         <td>{{ transformType(product.typeOfProduct) }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.discount}}</td>
-        <td>{{ product.typeOfProduct}}</td>
+        <td *ngIf="product.discountapply">{{ product.discount}}</td>
+        <td *ngIf="!product.discountapply">-</td>
+        <td *ngIf="product.discountapply">{{ totalPrice(product.price, product.discount)}}</td>
+        <td *ngIf="!product.discountapply">-</td>
       </tr>
     </tbody>
   </table>

@@ -14,6 +14,7 @@ import { CategoryModel } from 'src/app/core/models/categories.model';
 import { ProductService } from 'src/app/shared/services/product-service/product.service';
 import { DiscountService } from 'src/app/shared/services/discount-service/discount.service';
 import { CategoryService } from 'src/app/shared/services/category-service/category.service';
+import { disableDebugTools } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product',
@@ -53,8 +54,8 @@ export class ProductComponent implements OnInit {
       typeOfProduct: [undefined, [Validators.required]],
       name: ['', [Validators.required]],
       price: [0, [Validators.required]],
-      discountapply: [false],
-      discount: [0]
+      discountapply: [{ value: false, disabled: true}],
+      discount: [{ value: 0, disabled: true}]
     });
   }
 
@@ -77,7 +78,6 @@ export class ProductComponent implements OnInit {
   getAllDiscounts(): Observable<DiscountModel[]>{
     return this.discountService.getAllDiscount().pipe(
       tap((discounts: DiscountModel[]) => {
-        console.log('Executing getAllDiscounts...');
         this.listOfDiscounts = [...discounts];
       }));
   }
@@ -85,7 +85,6 @@ export class ProductComponent implements OnInit {
   getAllCategories(): void{
     this.categoryService.getCategory().subscribe(
       (categories: CategoryModel[]) => {
-        console.log('Executing getAllCategories...');
         this.listOfCategories = [...categories];
       });
   }

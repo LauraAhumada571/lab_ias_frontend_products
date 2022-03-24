@@ -28,7 +28,6 @@ export class ProductsListComponent implements OnInit {
   callServices(): void {
     this.getAllCategories().pipe(
       mergeMap( (categories: CategoryModel[]) => {
-        console.log('Executing mergeMap ...');
         return this.getAllProductos();
       })
     ).subscribe();
@@ -37,7 +36,6 @@ export class ProductsListComponent implements OnInit {
   getAllCategories(): Observable<CategoryModel[]> {
     return this.categoryService.getCategory().pipe(
       tap((categories: CategoryModel[]) => {
-        console.log('Executing categories ...');
         this.listOfCategories = [...categories];
       })
     );
@@ -46,9 +44,7 @@ export class ProductsListComponent implements OnInit {
   getAllProductos(): Observable<ProductModel[]> {
     return this.productService.getAllProducts().pipe(
       tap((products: ProductModel[]) => {
-        console.log('Executing getAllProducts...');
         this.listOfProducts = [...products];
-        console.log('ListOfProducts', this.listOfProducts);
       })
     );
   }
@@ -60,8 +56,13 @@ export class ProductsListComponent implements OnInit {
   }
 
   transformType(typeId: number): string | number {
-    const categoryForChange = this.listOfCategories.find((category: CategoryModel) => category.id === typeId);
+    const categoryForChange = this.listOfCategories.find((category: CategoryModel) => category.id === Number(typeId));
     return categoryForChange ? categoryForChange.name : typeId;
+  }
+
+  totalPrice(price: number, discount: number): number{
+    let totalPrice = price - (price* (discount / 100));
+    return totalPrice;
   }
 
   trackByItems(index: number, item: ProductModel): number {

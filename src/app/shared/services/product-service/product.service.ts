@@ -12,20 +12,14 @@ export class ProductService {
   constructor() { }
 
   getAllProducts(): Observable<ProductModel[]> {
-    console.log('Executing method');
-
     return of(products).pipe(
       tap( () => {
         console.log('Executing query');
-
       })
     );
   }
 
   saveProduct(product: ProductModel): Observable<ProductModel> {
-    console.log('Executing method');
-
-
     return of(product).pipe(
       tap( () => {
         products.push(product);
