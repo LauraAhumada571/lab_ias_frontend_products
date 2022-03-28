@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     this.loginService.login(formValues).subscribe(
       (userLogin: LoginModel) =>{
         window.localStorage.setItem('userApp', 'success');
-        this.router.navigate(['/products'])
+        this.router.navigate(['/character'])
       },
       (error: any) =>{
         alert(`Execution is bad... - ${error.message}`);
