@@ -11,7 +11,7 @@
       </div>
       <div class="form-group">
         Type of product
-        <select formControlName="typeOfProduct" class="form-select" aria-label="Default select example" (ngModelChange)="onChange($event)">
+        <select formControlName="typeOfProduct" class="form-select" aria-label="Default select example">
           <option *ngFor="let category of listOfCategories " value={{category.id}}>{{category.name}}</option>
         </select>
       </div>
@@ -34,7 +34,7 @@
       </div>
       <div class="form-group">
         <div class="form-check">
-          <input class="form-check-input" formControlName="discountapply" name="discountapply" id="discountapply" type="checkbox" value="">
+          <input class="form-check-input" formControlName="discountapply" name="discountapply" id="discountapply" type="checkbox" [attr.disabled]="true">
           <label class="form-check-label" for="flexCheckDefault">
             discount apply
           </label>
@@ -47,7 +47,8 @@
           type="text"
           class="form-control text-center"
           name="price"
-          id="discount">
+          id="discount"
+          [attr.disabled]="true">
       </div>
       <div class="form-group mt-2">
         <button class="btn btn-primary" (click)="onClickSave()"  type="submit">Save</button>

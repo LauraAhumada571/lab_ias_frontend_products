@@ -14,12 +14,18 @@ import { ProductsListComponent } from './components/products-list/products-list.
 // Services
 import { ProductService } from './shared/services/product-service/product.service';
 import { CategoryService } from './shared/services/category-service/category.service';
+import { ProductMainComponent } from './components/product-main/product-main.component';
+import { LoginComponent } from './components/login/login.component';
+import { LoginService } from './shared/services/login-service/login.service';
+import { LoginGuard } from './shared/guards/login-guard/login.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
-    ProductsListComponent
+    ProductsListComponent,
+    ProductMainComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +33,7 @@ import { CategoryService } from './shared/services/category-service/category.ser
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [ProductService, CategoryService],
+  providers: [ProductService, CategoryService, LoginService, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

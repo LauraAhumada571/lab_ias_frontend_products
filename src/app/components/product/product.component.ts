@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 //rxjs
 import { mergeMap, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 //modules
 import { DiscountModel } from 'src/app/core/models/discount.model';
@@ -26,6 +26,7 @@ export class ProductComponent implements OnInit {
   form: FormGroup;
   listOfDiscounts: DiscountModel[] = [];
   listOfCategories: CategoryModel[] = [];
+  suscribe$: Subscription;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -37,16 +38,18 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.getAllCategories();
+    this.getAllDiscounts();
+    this.listenerFieldTypeOfProduct();
   }
 
-  onChange(typeOfProduct: number):void{
+  /*onChange(typeOfProduct: number):void{
     this.getAllDiscounts().pipe(
       mergeMap( (discount: DiscountModel[]) => {
         this.checkDiscount(typeOfProduct);
         return discount
       })
     ).subscribe();
-  }
+  }*/
 
   createForm(): void {
     this.form = this.fb.group({
@@ -54,8 +57,8 @@ export class ProductComponent implements OnInit {
       typeOfProduct: [undefined, [Validators.required]],
       name: ['', [Validators.required]],
       price: [0, [Validators.required]],
-      discountapply: [{ value: false, disabled: true}],
-      discount: [{ value: 0, disabled: true}]
+      discountapply: [0],
+      discount: [0]
     });
   }
 
@@ -75,11 +78,11 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  getAllDiscounts(): Observable<DiscountModel[]>{
-    return this.discountService.getAllDiscount().pipe(
-      tap((discounts: DiscountModel[]) => {
+  getAllDiscounts(): void{
+    this.discountService.getAllDiscount().subscribe(
+        (discounts: DiscountModel[]) => {
         this.listOfDiscounts = [...discounts];
-      }));
+      });
   }
 
   getAllCategories(): void{
@@ -89,7 +92,7 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  checkDiscount(typeOfProduct: number){
+  checkDiscount(typeOfProduct: string){
     for(let i = 0; i < this.listOfDiscounts.length ; i++){
       if(Number(typeOfProduct) === this.listOfDiscounts[i].idProduct){
         this.form.get('discountapply').setValue(this.listOfDiscounts[i].discountApply);
@@ -98,16 +101,11 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  hwy(): void {
-    console.log(this.discountService.getAllDiscount());
+  listenerFieldTypeOfProduct(): void{
+    this.suscribe$ = this.form.get('typeOfProduct').valueChanges.subscribe(
+      (typeOfProduct: string) => {
+        this.checkDiscount(typeOfProduct);
+      }
+    );
   }
-
-  /*getDiscount(){
-    return this.getAllDiscounts().pipe(
-      mergeMap( (discounts: DiscountModel[]) => {
-        console.log('Executing mergeMap ...');
-        return this.getAllDiscounts();
-      })
-    ).subscribe();
-  }*/
 }
