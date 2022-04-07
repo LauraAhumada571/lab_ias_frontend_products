@@ -14,6 +14,7 @@ export class CharacterComponent implements OnInit {
 
   characters: CharacterModel;
   character: ResultModel;
+  isTrue = true;
 
   constructor( private characterService: RickAndMortyService) { }
 
